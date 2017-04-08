@@ -22,8 +22,20 @@ from google.appengine.ext.webapp import util
 
 form = """
 <h1>Form</h1>
-<form method="post" action="/testform">
-    Name: <input name="name">
+<form method="post">
+    When is your Birthday?
+    <br>
+    <label>Date
+    <input type="text" name="date">
+    </label>
+    <label>Month
+    <input type="text" name="month">
+    </label>
+    <label>Year
+    <input type="text" name="year">
+    </label>
+
+
     <br>
     <br>
     <input type="submit">
@@ -34,28 +46,20 @@ form = """
 
 class MainHandler(webapp.RequestHandler):
     """DocString for everything"""
+
     def get(self):
         """Docstring for method"""
         self.response.out.write(form)
 
-class TestHandler(webapp.RequestHandler):
-    """DocString for everything"""
     def post(self):
-        """
-        Docstring for method
-        """
-        name = self.request.get("name")
-        self.response.out.write(name)
+        """Post Handler"""
+        self.response.out.write('Wow, One more fuckup!!!')
 
-        # self.response.headers['Content-Type'] = 'text/plain'
-        # self.response.out.write(self.request)
 
 
 def main():
     """Another Docstring"""
-    application = webapp.WSGIApplication([('/', MainHandler),
-                                          ('/testform', TestHandler)],
-                                         debug=True)
+    application = webapp.WSGIApplication([('/', MainHandler)], debug=True)
     util.run_wsgi_app(application)
 
 
