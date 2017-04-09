@@ -34,26 +34,82 @@ form = """
     <label>Year
     <input type="text" name="year">
     </label>
-
+    <div>
+        <p>
+            %(error)s
+        </p>
+    </div>
 
     <br>
     <br>
     <input type="submit">
 </form>
-
 """
+MONTHS = {'mar': 'March', 'feb': 'February', 'aug': 'August',
+          'sep': 'September', 'apr': 'April', 'jun': 'June',
+          'jul': 'July', 'jan': 'January', 'may': 'May',
+          'nov': 'November', 'dec': 'December', 'oct': 'October'}
+
+def valid_date(date):
+    """For validity of day"""
+    if date and date.isdigit():
+        date = int(date)
+        if date > 0 and date < 32:
+            return date
+        else:
+            return None
+    else:
+        return None
+
+def valid_year(year):
+    """For validity of Year"""
+    if year and year.isdigit():
+        year = int(year)
+        if year >= 1900 and year <= 2020:
+            return year
+        else:
+            return None
+    else:
+        return None
+
+def valid_month(month):
+    """For validity of month"""
+    if month:
+        month_short = (month[:3]).lower()
+        month_new = MONTHS.get(month_short)
+        return month_new
+    else:
+        return None
+
 
 
 class MainHandler(webapp.RequestHandler):
     """DocString for everything"""
 
+    def write_form(self, error=''):
+        """ERRORS"""
+        self.response.out.write(form %{"error":error})
+
     def get(self):
         """Docstring for method"""
-        self.response.out.write(form)
+        self.write_form()
 
     def post(self):
         """Post Handler"""
-        self.response.out.write('Wow, One more fuckup!!!')
+        date = valid_date(self.request.get('date'))
+        month = valid_month(self.request.get('month'))
+        year = valid_year(self.request.get('year'))
+
+
+        if date and month and year:
+            self.response.out.write('All SET '+ '<a href="/">Go Back</a>')
+        elif not date:
+            self.write_form(' Invalid date ')
+        elif not month:
+            self.write_form(' Invalid month ')
+        elif not year:
+            self.write_form(' Invalid year ')
+
 
 
 
