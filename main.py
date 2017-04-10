@@ -52,6 +52,7 @@ MONTHS = {'mar': 'March', 'feb': 'February', 'aug': 'August',
           'jul': 'July', 'jan': 'January', 'may': 'May',
           'nov': 'November', 'dec': 'December', 'oct': 'October'}
 
+
 def valid_date(date):
     """For validity of day"""
     if date and date.isdigit():
@@ -63,6 +64,7 @@ def valid_date(date):
     else:
         return None
 
+
 def valid_year(year):
     """For validity of Year"""
     if year and year.isdigit():
@@ -73,6 +75,7 @@ def valid_year(year):
             return None
     else:
         return None
+
 
 def escape_html(s):
     """This is the escape function"""
@@ -89,16 +92,15 @@ def valid_month(month):
         return None
 
 
-
 class MainHandler(webapp.RequestHandler):
     """DocString for everything"""
 
     def write_form(self, error='', date='', month='', year=''):
         """ERRORS"""
-        self.response.out.write(form %{"error":error,
-                                       "date":escape_html(date),
-                                       "month":escape_html(month),
-                                       "year":escape_html(year)})
+        self.response.out.write(form % {"error": error,
+                                        "date": escape_html(date),
+                                        "month": escape_html(month),
+                                        "year": escape_html(year)})
 
     def get(self):
         """Docstring for method"""
@@ -113,34 +115,29 @@ class MainHandler(webapp.RequestHandler):
         date = valid_date(user_date)
         month = valid_month(user_month)
         year = valid_year(user_year)
-
-
         if date and month and year:
             self.redirect("/thanks")
 
         elif not (date and month and year):
-            self.write_form(' Invalid Inputs ', user_date, user_month, user_year)
-        # elif not month:
-        #     self.write_form(' Invalid month ', user_month, user_date, user_year)
-        # elif not year:
-        #     self.write_form(' Invalid year ', user_year, user_date, user_month)
+            self.write_form(' Invalid Inputs ',
+                            user_date, user_month, user_year)
 
 
 class ThanksHandler(webapp.RequestHandler):
     """This is Redirection class"""
     def get(self):
         """For thanks redirection"""
-        self.response.out.write('<img \
-                                        src="http://www.businessofapps.com/wp-content/uploads/2016/09/225008LOGO-1.jpg" \
-                                        style="width:100px;" >'+ '<br>' + '<a href="/">Go Back</a>')
-
-
+        self.response.out.write('<img src="http://www.businessofapps.com/ \
+                                wp-content/uploads/2016/09/225008LOGO-1.jpg" \
+                                style="width:100px;" >' + '<br>' + '<a href="/"> \
+                                Go Back</a>')
 
 
 def main():
     """Another Docstring"""
     application = webapp.WSGIApplication([('/', MainHandler),
-                                          ('/thanks', ThanksHandler)], debug=True)
+                                          ('/thanks', ThanksHandler)],
+                                         debug=True)
     util.run_wsgi_app(application)
 
 
