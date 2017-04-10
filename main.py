@@ -25,16 +25,17 @@ form = """
 <form method="post">
     When is your Birthday?
     <br>
+    <br>
     <label>Date
-    <input type="text" name="date">
+    <input type="text" name="date" value="%(date)s">
     </label>
     <label>Month
-    <input type="text" name="month">
+    <input type="text" name="month" value="%(month)s">
     </label>
     <label>Year
-    <input type="text" name="year">
+    <input type="text" name="year" value="%(year)s">
     </label>
-    <div>
+    <div style="color:red">
         <p>
             %(error)s
         </p>
@@ -86,9 +87,12 @@ def valid_month(month):
 class MainHandler(webapp.RequestHandler):
     """DocString for everything"""
 
-    def write_form(self, error=''):
+    def write_form(self, error='', date='', month='', year=''):
         """ERRORS"""
-        self.response.out.write(form %{"error":error})
+        self.response.out.write(form %{"error":error,
+                                       "date":date,
+                                       "month":month,
+                                       "year":year})
 
     def get(self):
         """Docstring for method"""
@@ -96,19 +100,23 @@ class MainHandler(webapp.RequestHandler):
 
     def post(self):
         """Post Handler"""
-        date = valid_date(self.request.get('date'))
-        month = valid_month(self.request.get('month'))
-        year = valid_year(self.request.get('year'))
+        user_date = self.request.get('date')
+        user_month = self.request.get('month')
+        user_year = self.request.get('year')
+
+        date = valid_date(user_date)
+        month = valid_month(user_month)
+        year = valid_year(user_year)
 
 
         if date and month and year:
             self.response.out.write('All SET '+ '<a href="/">Go Back</a>')
-        elif not date:
-            self.write_form(' Invalid date ')
-        elif not month:
-            self.write_form(' Invalid month ')
-        elif not year:
-            self.write_form(' Invalid year ')
+        elif not (date and month and year):
+            self.write_form(' Invalid Inputs ', user_date, user_month, user_year)
+        # elif not month:
+        #     self.write_form(' Invalid month ', user_month, user_date, user_year)
+        # elif not year:
+        #     self.write_form(' Invalid year ', user_year, user_date, user_month)
 
 
 
