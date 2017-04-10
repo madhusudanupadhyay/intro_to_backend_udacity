@@ -110,7 +110,7 @@ class MainHandler(webapp.RequestHandler):
 
 
         if date and month and year:
-            self.response.out.write('All SET '+ '<a href="/">Go Back</a>')
+            self.response.out.write('<img src="http://www.businessofapps.com/wp-content/uploads/2016/09/225008LOGO-1.jpg" style="width:100px;" >'+ '<br>' + '<a href="/">Go Back</a>')
         elif not (date and month and year):
             self.write_form(' Invalid Inputs ', user_date, user_month, user_year)
         # elif not month:
