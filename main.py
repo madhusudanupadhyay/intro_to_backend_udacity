@@ -19,6 +19,7 @@ This is docstring
 #
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
+import cgi
 
 form = """
 <h1>Form</h1>
@@ -73,6 +74,11 @@ def valid_year(year):
     else:
         return None
 
+def escape_html(s):
+    """This is the escape function"""
+    return cgi.escape(s, quote=True)
+
+
 def valid_month(month):
     """For validity of month"""
     if month:
@@ -90,9 +96,9 @@ class MainHandler(webapp.RequestHandler):
     def write_form(self, error='', date='', month='', year=''):
         """ERRORS"""
         self.response.out.write(form %{"error":error,
-                                       "date":date,
-                                       "month":month,
-                                       "year":year})
+                                       "date":escape_html(date),
+                                       "month":escape_html(month),
+                                       "year":escape_html(year)})
 
     def get(self):
         """Docstring for method"""
