@@ -26,28 +26,13 @@ from google.appengine.ext.webapp import util
 TEMPLATE_DIR = os.curdir
 JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
 
-HIDDEN_HTML = """
-    <input type="hidden" name="food" value="%s">
-"""
-
-ITEM_HTML = "<li>%s</li>"
-
-SHOPPING_LIST_HTML = """
-    <br>
-    <br>
-    <h2>Shopping List</h2>
-    <ul>
-    %s
-    </ul>
-"""
+# Parent Class with simple rendering functions
 
 class Handler(webapp.RequestHandler):
     """This is magic"""
     def write(self, *a, **kw):
         """Magical get"""
         self.response.out.write(*a, **kw)
-
-# This is for Rendering basic templates
 
     def render_str(self, template, **params):
         """Using render function"""
@@ -59,36 +44,17 @@ class Handler(webapp.RequestHandler):
         self.write(self.render_str(template, **kw))
 
 
-
-
+# Handler class for handling shopping list items
 
 class MSHandler(Handler):
     """This is magic"""
     def get(self):
         """Magical get"""
-        n = self.request.get('n')
-        if n:
-            n = int(n)
-        self.render("shopping_list.html", n=n)
+        items = self.request.get_all("food")
+        self.render("shopping_list.html", items=items)
 
+# FizzBuzz class for nothing at all
 
-
-        # output = HTML
-        # output_hidden = ""
-
-        # items = self.request.get_all("food")
-        # if items:
-        #     output_items = ""
-        #     for item in items:
-        #         output_hidden += HIDDEN_HTML % item
-        #         output_items += ITEM_HTML % item
-
-        #     output_shopping = SHOPPING_LIST_HTML % output_items
-        #     output += output_shopping
-        # output = output % output_hidden
-
-
-        # self.write(output)
 class FizzBuzzHandler(Handler):
     """This is to calculate the fizzbuzz numbers and redirect to the webapp"""
     def get(self):
